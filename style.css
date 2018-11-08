@@ -15,7 +15,7 @@ main {
   width: 100%;
   min-height: 100%;
   padding: 100px 20px 0;
-  font: 20px/36px sans-serif;
+  font: 20px/36px "Quicksand", sans-serif;
   color: #aaa;
   background: url("bg.png") repeat 0 0/auto;
 }
@@ -61,7 +61,7 @@ main {
   z-index: 10;
 }
 
-svg {
+#batty svg {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -85,7 +85,8 @@ svg {
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   color: #005600;
-  font: 48px/64px sans-serif;
+  font-size: 48px;
+  line-height: 64px;
   z-index: 2;
 }
 
@@ -95,15 +96,15 @@ svg {
   bottom: 20px;
   left: calc(50% - 80px);
   width: calc(100% - 40px);
-  background-color: green;
   overflow: hidden;
   opacity: .7;
   z-index: 0;
-  background: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0)), color-stop(50%, rgba(0, 0, 0, 0)), color-stop(51%, rgba(100, 100, 100, 0.1)), color-stop(75%, rgba(0, 0, 0, 0)));
-  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(100, 100, 100, 0.1) 51%, rgba(0, 0, 0, 0) 75%);
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0)), color-stop(50%, rgba(0, 0, 0, 0)), color-stop(51%, rgba(0, 0, 0, 0.1)), color-stop(75%, rgba(0, 0, 0, 0)));
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.1) 51%, rgba(0, 0, 0, 0) 75%);
+  background-color: green;
 }
 
-.charging svg {
+.charging #batty svg {
   opacity: .3;
   z-index: 1;
 }
@@ -132,14 +133,62 @@ svg {
           animation: chargingAfter 5s linear 1s infinite;
 }
 
-.charging-data {
-  width: 280px;
-  margin: 0 auto;
-  text-align: center;
+.charging .charging-data {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+  opacity: 1;
 }
 
-.charging-data p {
-  margin-bottom: 20px;
+.charging-data {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  padding: 10px 10px 10px 100px;
+  text-align: center;
+  font-size: 36px;
+  line-height: 48px;
+  color: #fff;
+  background-color: green;
+  text-align: left;
+  -webkit-transform: translateY(70px);
+          transform: translateY(70px);
+  opacity: 0;
+  -webkit-transition: opacity 1s, -webkit-transform .7s;
+  transition: opacity 1s, -webkit-transform .7s;
+  transition: transform .7s, opacity 1s;
+  transition: transform .7s, opacity 1s, -webkit-transform .7s;
+  will-change: transform;
+}
+
+.charging-data svg {
+  position: absolute;
+  top: 10px;
+  left: 40px;
+  width: auto;
+  height: calc(100% - 20px);
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  -webkit-animation: chargeData 1s infinite;
+          animation: chargeData 1s infinite;
+  will-change: transform;
+}
+
+@-webkit-keyframes chargeData {
+  50% {
+    -webkit-transform: scale(0.95);
+            transform: scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+@keyframes chargeData {
+  50% {
+    -webkit-transform: scale(0.95);
+            transform: scale(0.95);
+    opacity: 0.7;
+  }
 }
 
 @-webkit-keyframes chargingBefore {

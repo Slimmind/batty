@@ -3,7 +3,7 @@ $color-dark-green: #005600;
 $color-light-gray: #cdcdcd; 
 $color-gray: #aaa;
 $color-white: #fff;
-
+$font: 'Quicksand', sans-serif;
 //
 * {
   box-sizing: border-box;
@@ -19,7 +19,7 @@ main {
   width: 100%;
   min-height: 100%;
   padding: 100px 20px 0;
-  font: 20px/36px sans-serif;
+  font: 20px/36px $font;
   color: $color-gray;
   background: url('bg.png') repeat 0 0 / auto;
 }
@@ -58,20 +58,21 @@ main {
     border-radius: 5px 5px 0 0;
     z-index: 10;
   }
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: 180px;
+    z-index: 0;
+    opacity: .3;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s;
+  }
 }
-svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: auto;
-  height: 180px;
-  z-index: 0;
-  opacity: .3;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .3s;
-}
+
 #level {
   content: attr(data-level);
   position: absolute;
@@ -79,7 +80,8 @@ svg {
   left: 50%;
   transform: translate(-50%, -50%);
   color: $color-dark-green;
-  font: 48px/64px sans-serif;
+  font-size: 48px;
+  line-height: 64px;
   z-index: 2;
 }
 #power {
@@ -88,16 +90,18 @@ svg {
   bottom: 20px;
   left: calc(50% - 80px);
   width: calc(100% - 40px);
-  background-color: $color-green;
   overflow: hidden;
   opacity: .7;
   z-index: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, rgba(100,100,100,.1) 51%, rgba(0,0,0,0) 75%);
+  background-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,.1) 51%, rgba(0,0,0,0) 75%);
+  background-color: $color-green;
 }
 .charging {
-  svg {
-    opacity: .3;
-    z-index: 1;
+  #batty {
+    svg {
+      opacity: .3;
+      z-index: 1;
+    }
   }
   #power {
     &:before,
@@ -120,17 +124,46 @@ svg {
       animation: chargingAfter 5s linear 1s infinite;
     }
   }
-}
-
-.charging-data {
-  width: 280px;
-  margin: 0 auto;
-  text-align: center;
-  p {
-    margin-bottom: 20px;
+  .charging-data {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
+.charging-data {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  padding: 10px 10px 10px 100px;
+  text-align: center;
+  font-size: 36px;
+  line-height: 48px;
+  color: $color-white;
+  background-color: $color-green;
+  text-align: left;
+  transform: translateY(70px);
+  opacity: 0;
+  transition: transform .7s, opacity 1s;
+  will-change: transform;
+  svg {
+    position: absolute;
+    top: 10px;
+    left: 40px;
+    width: auto;
+    height: calc(100% - 20px);
+    transform: scale(1);
+    animation: chargeData 1s infinite;
+    will-change: transform;
+  }
+}
+@keyframes chargeData {
+  50% {
+    transform: scale(.95);
+    opacity: 0.7;
+  }
+}
 @keyframes chargingBefore {
   10% {
     opacity: 1;

@@ -4,6 +4,9 @@ navigator.getBattery().then(function (battery) {
   const batty = doc.getElementById('batty');
   const power = doc.getElementById('power');
   const battyLevel = doc.getElementById('level');
+  const chargingData = doc.querySelector('.charging-data');
+  const seconds = chargingData.querySelector('.seconds');
+  const minutes = chargingData.querySelector('.minutes');
   let chargingCounter = 0;
   let dischargingCounter = 0;
 
@@ -23,6 +26,7 @@ navigator.getBattery().then(function (battery) {
     let text = doc.createTextNode(`LEVEL: ${level * 100}%`);
     power.style.height = `${Math.floor(level * 260)}px`;
     battyLevel.innerHTML = `${Math.floor(level * 100)}%`;
+    console.log("level: ", level);
     if (level < 0.7 && level > 0.4) {
       power.style.backgroundColor = '#ffcd00'
     } else if (level < 0.4) {
@@ -32,12 +36,12 @@ navigator.getBattery().then(function (battery) {
 
   // CHARGING
   function updateChargingInfo() {
-    batty.classList.add('charging');
+    batty.parentElement.classList.add('charging');
     countCharge();
   }
   // DISCHARGING
   function updateDischargingInfo() {
-    batty.classList.remove('charging');
+    batty.parentElement.classList.remove('charging');
   }
   // COUNT CHARGE
   function countCharge() {
@@ -48,6 +52,17 @@ navigator.getBattery().then(function (battery) {
   // RENDER TIME
   function renderTime(time) {
     console.log("TIME: ", time);
+    if(time < 10) {
+      seconds.textContent = `0${time}`;
+    } else if(time > 9) {
+      seconds.textContent = time;
+    } else if(time > 59) {
+      if(minutes > 10) {
+        minutes.textContent = `0${time % 60}`;
+      } else {
+        minutes.textContent = time % 60;
+      }
+    }
   }
   setInterval(() => {
     updateChargeInfo();
