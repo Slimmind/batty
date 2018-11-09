@@ -27,6 +27,8 @@ main {
   position: relative;
   width: 100vw;
   height: 100vh;
+  transition: height .3s;
+  overflow: hidden;
 }
 #batty {
   position: absolute;

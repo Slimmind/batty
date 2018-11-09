@@ -1,6 +1,16 @@
-navigator.getBattery().then(function (battery) {
+const win = window;
+const doc = document;
+const battyWrap = doc.querySelector('.batty-wrap');
 
-  const doc = document;
+function fixWinHeight () {
+  battyWrap.style.height = window.innerHeight;
+};
+
+fixWinHeight();
+
+win.onresize = fixWinHeight;
+
+navigator.getBattery().then(function (battery) {
   const batty = doc.getElementById('batty');
   const power = doc.getElementById('power');
   const battyLevel = doc.getElementById('level');
