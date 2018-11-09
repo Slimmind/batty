@@ -219,7 +219,7 @@ main {
           animation: dischargeData 1s infinite;
 }
 
-@media screen and (orientation: landscape) {
+@media screen and (orientation: landscape) and (max-width: 1024px) {
   #batty {
     top: calc(50% - 185px);
     -webkit-transform: rotate(90deg);
