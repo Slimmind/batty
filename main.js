@@ -5,8 +5,13 @@ navigator.getBattery().then(function (battery) {
   const power = doc.getElementById('power');
   const battyLevel = doc.getElementById('level');
   const chargingData = doc.querySelector('.charging-data');
-  const seconds = chargingData.querySelector('.seconds');
-  const minutes = chargingData.querySelector('.minutes');
+  const dischargingData = doc.querySelector('.discharging-data');
+  const chargeSeconds = chargingData.querySelector('.seconds');
+  const chargeMinutes = chargingData.querySelector('.minutes');
+  const chargeHours = chargingData.querySelector('.hours');
+  const dischargeSeconds = dischargingData.querySelector('.seconds');
+  const dischargeMinutes = dischargingData.querySelector('.minutes');
+  const dischargeHours = dischargingData.querySelector('.hours');
   let chargingCounter = 0;
   let dischargingCounter = 0;
 
@@ -23,10 +28,8 @@ navigator.getBattery().then(function (battery) {
 
   function updateLevelInfo() {
     let level = battery.level;
-    let text = doc.createTextNode(`LEVEL: ${level * 100}%`);
     power.style.height = `${Math.floor(level * 260)}px`;
     battyLevel.innerHTML = `${Math.floor(level * 100)}%`;
-    console.log("level: ", level);
     if (level < 0.7 && level > 0.4) {
       power.style.backgroundColor = '#ffcd00'
     } else if (level < 0.4) {
@@ -37,36 +40,46 @@ navigator.getBattery().then(function (battery) {
   // CHARGING
   function updateChargingInfo() {
     batty.parentElement.classList.add('charging');
+    batty.parentElement.classList.remove('discharging');
     countCharge();
   }
   // DISCHARGING
   function updateDischargingInfo() {
+    batty.parentElement.classList.add('discharging');
     batty.parentElement.classList.remove('charging');
+    countDisCharge();
   }
   // COUNT CHARGE
   function countCharge() {
     chargingCounter ++;
-    renderTime(chargingCounter);
+    renderTime(chargingCounter, chargeSeconds, chargeMinutes, chargeHours);
   }
   // COUNT DISCHARGE
+  function countDisCharge() {
+    dischargingCounter ++;
+    renderTime(dischargingCounter, dischargeSeconds, dischargeMinutes, dischargeHours);
+  }
   // RENDER TIME
-  function renderTime(time) {
-    console.log("TIME: ", time);
-    if(time < 10) {
-      seconds.textContent = `0${time}`;
-    } else if(time > 9) {
-      seconds.textContent = time;
-    } else if(time > 59) {
-      if(minutes > 10) {
-        minutes.textContent = `0${time % 60}`;
-      } else {
-        minutes.textContent = time % 60;
-      }
+  function renderTime(time, seconds, minutes, hours) {
+    let s = time;
+    let m = Math.floor(s / 60);
+    let h = Math.floor(m / 60);
+    h %= 24;
+    m %= 60;
+    s %= 60;
+    seconds.textContent = lessTen(s);
+    minutes.textContent = lessTen(m);
+    hours.textContent = lessTen(h);
+  }
+  function lessTen(num) {
+    if(num < 10) {
+      return `0${num}`;
+    } else {
+      return num;
     }
   }
   setInterval(() => {
     updateChargeInfo();
     updateLevelInfo();
-    console.log("UpdateInfo");
   }, 1000);
 });
