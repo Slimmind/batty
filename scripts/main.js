@@ -15,23 +15,14 @@ navigator.getBattery().then(function (battery) {
   const power = doc.getElementById('power');
   const battyLevel = doc.getElementById('level');
   const chargingData = doc.querySelector('.charging-data');
-  const dischargingData = doc.querySelector('.discharging-data');
   const chargeSeconds = chargingData.querySelector('.seconds');
   const chargeMinutes = chargingData.querySelector('.minutes');
   const chargeHours = chargingData.querySelector('.hours');
-  const dischargeSeconds = dischargingData.querySelector('.seconds');
-  const dischargeMinutes = dischargingData.querySelector('.minutes');
-  const dischargeHours = dischargingData.querySelector('.hours');
   let chargingCounter = 0;
-  let dischargingCounter = 0;
 
   function updateChargeInfo() {
     if (battery.charging) {
       updateChargingInfo();
-      battery.removeEventListener('dischargingtimechange', updateDischargingInfo);
-    } else {
-      updateDischargingInfo();
-      battery.removeEventListener('chargingtimechange', updateChargingInfo);
     }
   }
 
@@ -50,24 +41,12 @@ navigator.getBattery().then(function (battery) {
   // CHARGING
   function updateChargingInfo() {
     batty.parentElement.classList.add('charging');
-    batty.parentElement.classList.remove('discharging');
     countCharge();
-  }
-  // DISCHARGING
-  function updateDischargingInfo() {
-    batty.parentElement.classList.add('discharging');
-    batty.parentElement.classList.remove('charging');
-    countDisCharge();
   }
   // COUNT CHARGE
   function countCharge() {
     chargingCounter ++;
     renderTime(chargingCounter, chargeSeconds, chargeMinutes, chargeHours);
-  }
-  // COUNT DISCHARGE
-  function countDisCharge() {
-    dischargingCounter ++;
-    renderTime(dischargingCounter, dischargeSeconds, dischargeMinutes, dischargeHours);
   }
   // RENDER TIME
   function renderTime(time, seconds, minutes, hours) {
